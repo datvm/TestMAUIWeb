@@ -1,0 +1,32 @@
+﻿@page "/"
+
+@inject IJSRuntime js;
+
+<p>Pick a file here:</p>
+
+<InputFile OnChange="@this.OnFilePicked" accept="application/json" />
+
+@if (this.currFile is not null)
+{
+    <div class="mb-5">
+        <p>Char count: @(this.currValue.Length)</p>
+
+        <textarea @bind="this.currValue" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <p>
+            Formatted:
+            <button onclick="@(() => this.Download(this.formattedJson))">Download</button>
+        </p>
+        <textarea @bind="this.formattedJson" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <p>
+            Minified:
+            <button onclick="@(() => this.Download(this.minifiedJson))">Download</button>
+        </p>
+        <textarea @bind="this.minifiedJson" class="form-control"></textarea>
+    </div>
+}
