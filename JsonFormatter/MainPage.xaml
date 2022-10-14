@@ -3,24 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JsonFormatter.MainPage">
 
-    <WebView x:Name="webView">
-        <WebView.Source>
-            <HtmlWebViewSource>
-                <HtmlWebViewSource.Html>
-                    <![CDATA[
-                <html>
-                <head>
-                </head>
-                <body>
-                    <p>Loading...</p>
-                    
-                    <script>location.href="./Resources/Raw/App/index.html"</script>
-                </body>
-                </html>                    
-                ]]>
-                </HtmlWebViewSource.Html>
-            </HtmlWebViewSource>
-        </WebView.Source>
+    <WebView x:Name="webView" Source="index.html">
     </WebView>
 
 </ContentPage>
