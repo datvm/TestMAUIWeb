@@ -5,12 +5,28 @@ customElements.define("main-app", class extends HTMLElement {
 
     #btnBeautify = this.querySelector(".btn-beautify");
     #btnMinify = this.querySelector(".btn-minify");
+    #btnDl = this.querySelector(".btn-download");
 
     constructor() {
         super();
 
         this.#btnBeautify.addEventListener("click", () => void this.#beautify());
         this.#btnMinify.addEventListener("click", () => void this.#minify());
+        this.#btnDl.addEventListener("click", () => void this.#download());
+    }
+
+    #download() {
+        const file = new Blob([this.#txtBeautified.value], {
+            type: "application/json",
+        });
+        const url = URL.createObjectURL(file);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "beautified.json";
+        a.click();
+
+        URL.revokeObjectURL(url);
     }
 
     #minify() {

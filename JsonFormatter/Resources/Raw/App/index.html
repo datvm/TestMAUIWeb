@@ -3,6 +3,7 @@
 
 <head>
     <title>JSON Formatter</title>
+    <meta charset="utf-8" />
 
     <link rel="stylesheet" href="bootstrap.min.css" />
 </head>
@@ -10,7 +11,7 @@
 <body>
     <main-app>
         <p>Minified:</p>
-        <textarea class="txt-minified"></textarea>
+        <textarea class="form-control txt-minified"></textarea>
 
         <p>
             <button class="btn-beautify">
@@ -22,7 +23,9 @@
         </p>
 
         <p>Beautified:</p>
-        <textarea class="txt-beautified"></textarea>
+        <textarea class="form-control txt-beautified"></textarea>
+
+        <p><button class="btn-download">Download</button></p>
     </main-app>
 
     <script src="formatjson.js"></script>

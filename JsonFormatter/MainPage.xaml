@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="JsonFormatter.MainPage">
 
-    <WebView x:Name="webView" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+    <WebView x:Name="webView">
         <WebView.Source>
             <HtmlWebViewSource>
                 <HtmlWebViewSource.Html>
@@ -12,9 +12,9 @@
                 <head>
                 </head>
                 <body>
-                <h1>.NET MAUI</h1>
-                <p>The CSS and image are loaded from local files!</p>
-                <p><a href="index.html">next page</a></p>
+                    <p>Loading...</p>
+                    
+                    <script>location.href="./Resources/Raw/App/index.html"</script>
                 </body>
                 </html>                    
                 ]]>
