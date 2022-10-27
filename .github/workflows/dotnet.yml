@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ "master_action" ]
+    branches: ["master_action"]
   pull_request:
-    branches: [ "master_action" ]
+    branches: ["master_action"]
 
 jobs:
   build-ios:
@@ -13,6 +13,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Import Code-Signing Certificates
+        uses: Apple-Actions/import-codesign-certs@v1
+        with:
+          p12-filepath: "keyStore.p12"
+          p12-password: ${{ secrets.KEYSTOREPASSWORD }}
+
+      - name: Download Apple Provisioning Profiles
+        uses: Apple-Actions/download-provisioning-profiles@v1
+        with:
+          bundle-id: "com.hopebestsoftware.testapp"
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
 
       - name: Setup .NET 6
         uses: actions/setup-dotnet@v3
@@ -29,6 +43,6 @@ jobs:
         run: dotnet build JsonFormatter/JsonFormatter.csproj -c Release -f net6.0-ios --no-restore /p:packageApp=True /p:ArchiveOnBuild=True
 
       - name: Upload iOS Artifact
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3
         with:
-          path: 'JsonFormatter/bin/Release/**'
+          path: '**/*.ipa'
