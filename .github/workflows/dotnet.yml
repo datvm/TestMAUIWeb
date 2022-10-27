@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master_action" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master_action" ]
 
 jobs:
   build-ios:
@@ -26,10 +26,9 @@ jobs:
         run: dotnet restore JsonFormatter/JsonFormatter.csproj
 
       - name: Build MAUI iOS
-        run: dotnet build JsonFormatter/JsonFormatter.csproj -c Release -f net6.0-ios --no-restore /p:buildForSimulator=True /p:packageApp=True /p:ArchiveOnBuild=False
+        run: dotnet build JsonFormatter/JsonFormatter.csproj -c Release -f net6.0-ios --no-restore /p:buildForSimulator=True /p:packageApp=True /p:ArchiveOnBuild=True
 
       - name: Upload iOS Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: jsonformatter-ios-ci-build
-          path: JsonFormatter/bin/Release/net6.0-ios/iossimulator-x64/**/*.app
+          path: '**/*.ipa'
