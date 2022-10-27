@@ -46,12 +46,18 @@
 		<MauiFont Include="Resources\Fonts\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
-		<MauiAsset Include="Resources\Raw\App\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 		<!--<MauiAsset Include="Resources\Raw\**" />-->
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiCss Remove="Resources\Raw\**" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
+	  <PackageReference Include="Xamarin.AndroidX.WebKit">
+	    <Version>1.5.0</Version>
+	  </PackageReference>
 	</ItemGroup>
 
 

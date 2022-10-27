@@ -13,6 +13,13 @@ customElements.define("main-app", class extends HTMLElement {
         this.#btnBeautify.addEventListener("click", () => void this.#beautify());
         this.#btnMinify.addEventListener("click", () => void this.#minify());
         this.#btnDl.addEventListener("click", () => void this.#download());
+
+        this.#testLoadJson();
+    }
+
+    async #testLoadJson() {
+        const json = await fetch("./test.json").then(r => r.json());
+        this.querySelector("#lbl-test").textContent = json.Text;
     }
 
     #download() {

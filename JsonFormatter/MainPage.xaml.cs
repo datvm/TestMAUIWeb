@@ -1,11 +1,16 @@
-﻿using Android.Content;
-using Android.Webkit;
-using Java.Interop;
-using Java.IO;
-using Java.Net;
+﻿
 using Microsoft.Maui.Handlers;
-using Microsoft.Maui.Platform;
+using System.Diagnostics;
 using System.Text;
+
+#if ANDROID
+using Android.Content;
+using Android.Runtime;
+using Android.Webkit;
+using AndroidX.Annotations;
+using AndroidX.WebKit;
+using Java.IO;
+#endif
 
 namespace JsonFormatter;
 
@@ -13,27 +18,35 @@ public partial class MainPage : ContentPage
 {
 
     public MainPage()
-	{
-		InitializeComponent();
+    {
+#if ANDROID
+        //this.ModifyWebView();
+#endif
 
-		this.ModifyWebView();
+        InitializeComponent();
+
+#if ANDROID
+        //this.webView.Source = "https://webapp/assets/index.html";
+        this.webView.Source = "https://www.google.com/assets/index.html";
+#endif
     }
 
-	void ModifyWebView()
-	{
-		WebViewHandler.Mapper.AppendToMapping("WebViewWithDownload", (handler, view) =>
-		{
 #if ANDROID
-			var andView = handler.PlatformView;
-			andView.SetDownloadListener(new DownloadListenerHandler());
-#endif
-		});
-	}
+    void ModifyWebView()
+    {
+        //WebViewHandler.Mapper.AppendToMapping("MyAndroidWebView", (handler, view) =>
+        //{
+        //    var v = handler.PlatformView;
+        //    v.SetDownloadListener(new DownloadListenerHandler());
+        //});
+    }
 
-	class DownloadListenerHandler : Java.Lang.Object, IDownloadListener
-	{
-		public async void OnDownloadStart(string? url, string? userAgent, string? contentDisposition, string? mimetype, long contentLength)
-		{
+    
+
+    class DownloadListenerHandler : Java.Lang.Object, IDownloadListener
+    {
+        public async void OnDownloadStart(string? url, string? userAgent, string? contentDisposition, string? mimetype, long contentLength)
+        {
             // There should be URL parsing for base64 as well but for now just get it
             // For blob, extra parsing is needed
             var content = url!;
@@ -46,25 +59,27 @@ public partial class MainPage : ContentPage
             var (result, data) = await MauiProgram.RequestAndroidFileAsync(picker);
             var fileUri = data?.Data;
             if (result != Android.App.Result.Ok || fileUri is null)
-			{
-				// Handle error here
-				return;
-			}
+            {
+                // Handle error here
+                return;
+            }
 
-			var file = Platform.CurrentActivity?.ContentResolver?.OpenFileDescriptor(fileUri, "w");
-			if (file?.FileDescriptor is null)
-			{
-				// Something is wrong here
-				return;
-			}
+            var file = Platform.CurrentActivity?.ContentResolver?.OpenFileDescriptor(fileUri, "w");
+            if (file?.FileDescriptor is null)
+            {
+                // Something is wrong here
+                return;
+            }
 
-			using var jOutStream = new FileOutputStream(file.FileDescriptor);
-			var bytes = Encoding.UTF8.GetBytes(content);
-			jOutStream.Write(bytes);
-			await jOutStream.FlushAsync();
-			jOutStream.Close();
+            using var jOutStream = new FileOutputStream(file.FileDescriptor);
+            var bytes = Encoding.UTF8.GetBytes(content);
+            jOutStream.Write(bytes);
+            await jOutStream.FlushAsync();
+            jOutStream.Close();
         }
     }
+
+#endif
 
 }
 
